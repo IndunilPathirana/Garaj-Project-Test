@@ -1,20 +1,25 @@
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
+'use strict'
 
-const app = express();
+// require express and bodyParser
+const  express = require("express");
+const  bodyParser = require("body-parser");
+const path = require('path');
 
-app.set("view engine", "pug");
-app.set("views", "views");
 
-const adminData = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
+// create express app
+const  app = express();
+const customer = require("./routes/customer");
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.urlencoded({ extended:true }));
+app.use(bodyParser.json());
 
-app.use("/admin", adminData.routes);
-app.use(shopRoutes);
+//app.use("/admin", adminData.routes);
+//app.use(shopRoutes);
+
+//--------Customer Info -----------------------
+app.use("/customers",customer);
+
+
 
 app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
